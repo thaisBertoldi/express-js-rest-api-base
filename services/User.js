@@ -18,6 +18,23 @@ class User{
             console.log(error);
         }
     }
+
+    async findAll(){
+        try {
+            return await knex.select(['id', 'name', 'email', 'role']).table('users');
+        } catch (error) {
+            return [];
+        }
+    }
+
+    async findById(id){
+        try {
+            const result = await knex.select(['id', 'name', 'email', 'role']).where({ id: id }).table('users');
+            return result.length > 0 ? result[0] : undefined;
+        } catch (error) {
+            return [];
+        }
+    }
 }
 
 module.exports = new User();

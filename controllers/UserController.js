@@ -3,7 +3,10 @@ const bcrypt = require('bcrypt');
 
 class UserController {
 
-    async index(req, res){}
+    async index(req, res){
+        const users = await User.findAll();
+        res.json(users);
+    }
 
     async create(req, res){
         const { email, name, password } = req.body;
@@ -27,6 +30,16 @@ class UserController {
 
         res.status(200);
         res.send("Dados ok");
+    }
+
+    async findUser(req, res) {
+        const user = await User.findById(req.params.id);
+        if (!user){
+            res.status(404);
+            res.json({error: "Usuário não encontrado"});
+        } else {
+            res.json(user);
+        }
     }
 }
 
