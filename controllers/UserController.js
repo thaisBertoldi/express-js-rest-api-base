@@ -1,5 +1,6 @@
 const User = require('../services/User');
 const bcrypt = require('bcrypt');
+const PasswordToken = require('../services/PasswordToken');
 
 class UserController {
 
@@ -58,6 +59,17 @@ class UserController {
         if (result.status) {
             res.status(200);
             res.send('Tudo ok');
+        } else {
+            res.status(406);
+            res.send(result.err);
+        }
+    }
+
+    async recoverPassword(req, res) {
+        const result = await PasswordToken.create(req.body.email);
+        if (result.status) {
+            res.status(200);
+            res.send(result.token.toString());
         } else {
             res.status(406);
             res.send(result.err);
