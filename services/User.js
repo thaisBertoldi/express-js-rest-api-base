@@ -1,4 +1,5 @@
 const knex = require('../database/connection');
+const PasswordToken = require('./PasswordToken');
 
 class User{
 
@@ -91,6 +92,12 @@ class User{
             return { status: false, err: 'Usuário não existe.'}
         }
     }
+
+    async changePassword(newPassword, id, token) {
+        await knex.update({ password: newPassword }).where({ id: id }).table('users');
+        await PasswordToken.setUsed(token);
+    }
+
 }
 
 module.exports = new User();

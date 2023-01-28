@@ -75,6 +75,19 @@ class UserController {
             res.send(result.err);
         }
     }
+
+    async changePassword(req, res) {
+        const isValidToken = await PasswordToken.validate(req.body.token);
+        if (isValidToken.status) {
+            const hashPassword = await bcrypt.hash(req.body.password, 10);
+            await User.changePassword(hashPassword, isValidToken.token.user_id, isValidToken.token.token);
+            res.status(200);
+            res.send('Senha alterada');
+        } else {
+            res.status(406);
+            res.send('Token inválido');
+        }
+    }
 }
 
 module.exports = new UserController();
