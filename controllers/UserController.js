@@ -1,6 +1,9 @@
 const User = require('../services/User');
 const bcrypt = require('bcrypt');
 const PasswordToken = require('../services/PasswordToken');
+const jwt = require('jsonwebtoken');
+
+const secret = 'dhasdjfdksnfklsdmfoaisdhasodkasdmasçld';
 
 class UserController {
 
@@ -86,6 +89,24 @@ class UserController {
         } else {
             res.status(406);
             res.send('Token inválido');
+        }
+    }
+
+    async login(req, res) {
+        const { email, password } = req.body;
+        const user = await User.findByEmail(email);
+        if (user) {
+            const isEqualPassword = await bcrypt.compare(password, user.password);
+            if (isEqualPassword) {
+                const token = jwt.sign({ email: user.email, role: user.role }, secret);
+                res.status(200);
+                res.json({ token: token });
+            } else {
+                res.status(406);
+                res.send('Senha incorreta');
+            }
+        } else {
+            res.json({ status: false})
         }
     }
 }
