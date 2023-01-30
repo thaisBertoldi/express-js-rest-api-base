@@ -3,9 +3,9 @@ const PasswordToken = require('./PasswordToken');
 
 class User{
 
-    async new(email, password, name) {
+    async new(email, password, name, role) {
         try {
-            await knex.insert({ email: email, password: password, name: name, role: 0 }).table('users');
+            await knex.insert({ email: email, password: password, name: name, role: role }).table('users');
         } catch (error) {
             console.log(error);
         }

@@ -13,7 +13,7 @@ class UserController {
     }
 
     async create(req, res){
-        const { email, name, password } = req.body;
+        const { email, name, password, role } = req.body;
 
         if(!email || !name || !password) {
             res.status(400);
@@ -30,7 +30,7 @@ class UserController {
 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        await User.new(email, hashPassword, name);
+        await User.new(email, hashPassword, name, role);
 
         res.status(200);
         res.send("Dados ok");
