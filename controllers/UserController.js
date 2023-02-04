@@ -17,8 +17,14 @@ class UserController {
 
         if(!email || !name || !password) {
             res.status(400);
-            const err = !email ? "email inválido" : !name ? "nome inválido" : "senha inválida";
-            res.json({ err: err })
+            const err = !email ? "email" : !name ? "nome" : "senha";
+            res.json({ err: 'Preencha o campo ' + err })
+            return;
+        }
+
+        if(!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}\.?([a-z]+)?$/g)) {
+            res.status(400);
+            res.json({ err: 'Você precisa informar um email válido.'});
             return;
         }
 
