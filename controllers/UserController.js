@@ -108,7 +108,7 @@ class UserController {
       if (isEqualPassword) {
         const token = jwt.sign({ email: user.email, role: user.role }, secret);
         res.status(200);
-        res.json({ token: token });
+        res.json({ token: token, userRole: user.role });
       } else {
         res.status(406);
         res.json({ err: 'Senha incorreta' });
